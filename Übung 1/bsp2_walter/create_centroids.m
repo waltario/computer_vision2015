@@ -20,6 +20,6 @@ if(dimension == 3)
 elseif (dimension == 5)
    %save vector [R value, G value, B value, X , Y ] into vectorRGBXY
     for o = 1:k
-        centroids(o,:) = [input_image(rows(o),columns(o),1),input_image(rows(o),columns(o),2),input_image(rows(o),columns(o),3),double(columns(o)/column_size),double(rows(o)/row_size)];
+         centroids(o,:) = [input_image(rows(o),columns(o),1),input_image(rows(o),columns(o),2),input_image(rows(o),columns(o),3),double(rows(o)/row_size),double(columns(o)/column_size)];
     end      
 end

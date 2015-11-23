@@ -32,8 +32,8 @@ function [ image_reshaped ] = rearange_image(image, dimension)
             y_norm_temp = y_norm_temp + y_step; 
             y_norm = horzcat(y_norm,y_norm_temp);
         end       
-        image_reshaped(:,4) = x_norm';
-        image_reshaped(:,5) = y_norm'; 
+        image_reshaped(:,5) = x_norm';
+        image_reshaped(:,4) = y_norm'; 
     end
 
 end

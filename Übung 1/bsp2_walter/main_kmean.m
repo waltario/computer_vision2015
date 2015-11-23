@@ -1,5 +1,5 @@
 %test kmean function with different inputs
-%{
+
 %### dimension = 5 ,fixed k = 10 
 k=10;
 %test1 - simple.png 
@@ -29,7 +29,7 @@ test6_image = kmeans(test3_input_image,3,k,1.01);
 %### Show Output 1
 
 %print original image and new colored image for d=3/5 and k = fixed 10
-figure('Name','original [links]  d = 5, k = 5 [rechts]','NumberTitle','off');
+figure('Name','original [links]  d = 5, k = 10 [rechts]','NumberTitle','off');
 subplot(3,2,1); imshow(test1_input_image);
 subplot(3,2,2); imshow(test1_image);   
 
@@ -39,7 +39,7 @@ subplot(3,2,4); imshow(test2_image);
 subplot(3,2,5); imshow(test3_input_image);
 subplot(3,2,6); imshow(test3_image);
 
-figure('Name','original [links]  d = 3, k = 5 [rechts]','NumberTitle','off');
+figure('Name','original [links]  d = 3, k = 10 [rechts]','NumberTitle','off');
 subplot(3,2,1); imshow(test1_input_image);
 subplot(3,2,2); imshow(test4_image);
 
@@ -48,7 +48,7 @@ subplot(3,2,4); imshow(test5_image);
 
 subplot(3,2,5); imshow(test3_input_image);
 subplot(3,2,6); imshow(test6_image);
-%}
+
 %### image mm.jpg different dimesion and k
 
 %test3 - mm.jpg

@@ -47,38 +47,42 @@ mu=computeMeans(dimension, count, k, x, r);
 j_old=sum(dist);
 j_new=sum(dist2);
 
-disp(j_old);
-disp(j_new);
-disp(j_old/j_new);
+% disp(j_old);
+% disp(j_new);
+% disp(j_old/j_new);
 
 while(j_old/j_new)>threshold
    
-    disp('oldnew');
-    disp(j_old/j_new);
+%     disp('oldnew');
+%     disp(j_old/j_new);
     
     j_old=j_new;
     mu=computeMeans(dimension, count,k,x,r);
     
-    disp(mu);       
+%     disp(mu);       
     
     [dist,r]=computeDistances(count,k,x,mu);
     j_new=sum(dist);    
     
 end
 
-disp(j_old/j_new);
-disp(mu);
+% disp(j_old/j_new);
+% disp(mu);
 
+coloured_img=zeros(size(image,1),size(image,2));
 
 %colorize image with mean-values
-for i=1:size(image,1)
-    for j=1:size(image,2)
+%TODO
+for i=1:size(image,1);
+    
+    for j= 1:size(image,2);
+        
+        coloured_img(i,j)=mu(r(
         
         
-        
-    end
+    end    
+    
 end
-
 
 
 end

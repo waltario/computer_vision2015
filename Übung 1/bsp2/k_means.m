@@ -1,4 +1,4 @@
-function [ outputImage ] = k_means( imagename, dimension, k, threshold )
+function [ coloured_img ] = k_means( imagename, dimension, k, threshold )
 %UNTITLED Summary of this function goes here
 %   imagename... filename of the image
 %   dimension... 3 or 5, either with or without x,y-values of points
@@ -16,7 +16,13 @@ count=1;
 
 %initialise xn. generates a matrix which contains for every pixel its r,g,b
 %values and if the dimension is 5 also the x,y koordinates
-x=zeros(size(image,1)*size(image,2),5);
+if dimension==5
+    x=zeros(size(image,1)*size(image,2),5);
+else
+    x=zeros(size(image,1)*size(image,2),3);
+end
+    
+
 
 for j=1:size(image,1);    
     
@@ -67,13 +73,29 @@ while(j_old/j_new)>threshold
 end
 
 % disp(j_old/j_new);
-% disp(mu);
+disp(mu);
 
-
+coloured_img=zeros(size(image,1),size(image,2));
+c=1;
 %colorize image with mean-values
 %TODO
+for i=1:size(image,1);
+    
+    for j= 1:size(image,2);
+        
+        vec=mu(:,r(c,:)==1);               
+        coloured_img(i,j,1)=vec(1);
+        coloured_img(i,j,2)=vec(2);
+        coloured_img(i,j,3)=vec(3);
+        c=c+1;
+        
+    end    
+    
+end
 
+coloured_img=im2uint8(coloured_img);
 
+imshow(coloured_img);
 
 end
 

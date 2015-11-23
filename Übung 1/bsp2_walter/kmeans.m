@@ -27,7 +27,7 @@ image_reshaped = rearange_image(image,dimension);
   
     %calculate J 
     distortionMeasureJ_old= distanceImagetoRGB(hLogical);       %combine euclid distance points to centroid
-    distortionMeasureJ_old = sum(distortionMeasureJ_old(:))     %sum up all point to J
+    distortionMeasureJ_old = sum(distortionMeasureJ_old(:));     %sum up all point to J
    
     %calculate new mean values for rgb k values
     centroids = create_newCentroidMean(image_reshaped,hLogical,dimension,k);
@@ -72,10 +72,17 @@ for m = 1:k
     image_colored(hLogical(:,m),3) = centroids(m,3);
 end
 
+%{
 %create / reshape to original image n x m dimension
 outputImage =zeros(row_size,column_size,column_dim);
 for m = 1:3
     outputImage(:,:,m) = vec2mat(image_colored(:,m),column_size); 
+end
+%}
+ outputImage =zeros(row_size,column_size,column_dim);
+%reshape matrix for output
+for m = 1:3
+    outputImage(:,:,m) = reshape(image_colored(:,m),[column_size,row_size])';  
 end
 
 %print original image and new colored image

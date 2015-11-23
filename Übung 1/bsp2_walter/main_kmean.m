@@ -1,7 +1,7 @@
 %test kmean function with different inputs
-
+%{
 %### dimension = 5 ,fixed k = 10 
-k=15;
+k=10;
 %test1 - simple.png 
 % kmeans(input_image, dimension, k, threshold )
 test1_input_image=imread('images/simple.png');
@@ -26,7 +26,7 @@ test5_image = kmeans(test2_input_image,3,k,1.01);
 %test6 - mm.jpg , dimension = 3
 test6_image = kmeans(test3_input_image,3,k,1.01);
 
-%### Show Output
+%### Show Output 1
 
 %print original image and new colored image for d=3/5 and k = fixed 10
 figure('Name','original [links]  d = 5, k = 5 [rechts]','NumberTitle','off');
@@ -48,9 +48,12 @@ subplot(3,2,4); imshow(test5_image);
 
 subplot(3,2,5); imshow(test3_input_image);
 subplot(3,2,6); imshow(test6_image);
-
+%}
 %### image mm.jpg different dimesion and k
-%{
+
+%test3 - mm.jpg
+test3_input_image=imread('images/mm.jpg');
+
 %test7 dimension d = 3, k = 3
 % kmeans(input_image, dimension, k, threshold )
 test7_image = kmeans(test3_input_image,3,3,1.01);
@@ -82,9 +85,9 @@ test17_image = kmeans(test3_input_image,5,20,1.01);
 test18_image = kmeans(test3_input_image,5,30,1.01);
 %test19 dimension d = 5, k = 50
 test19_image = kmeans(test3_input_image,5,50,1.01);
-%}
 
-%{
+%### Show Output 2
+
 %print orignial image mm.jpg first, and additional 7 images with d = 3,
 % k = 3,5,10,15,20,30,50
 figure('Name','original + d = 3, k = 3 to to 10','NumberTitle','off');

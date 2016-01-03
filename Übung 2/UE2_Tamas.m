@@ -62,6 +62,8 @@ officeview4_sift = vl_sift(single(officeview4g));
 officeview5_sift = vl_sift(single(officeview5g));
 
 
+% perm = randperm(size(campus1_sift,2)) ; 
+% sel = perm(1:50) ;
 
 
 campus1_sift(2,:) = -campus1_sift(2,:);
@@ -71,21 +73,32 @@ campus4_sift(2,:) = -campus4_sift(2,:);
 campus5_sift(2,:) = -campus5_sift(2,:);
 
 
+camp1=single(rgb2gray(campus1));
+imshow(camp1,[]);
+
+[f,d]=vl_sift(camp1);
+
+x=vl_plotframe(f);
+set(x,'color','y','linewidth',2);
+
 
 
 
 % plot with features (circles, lines in circles: radii)
 
-frh = vl_plotframe(campus2_sift);
-
-figure
- imshow(campus2g)
-figure
-vl_plotframe(campus3_sift)
-figure
-vl_plotframe(campus4_sift)
-figure
-vl_plotframe(campus5_sift)
+% frh = vl_plotframe(campus2_sift);
+% 
+% figure;
+%  imshow(campus2g);
+%  hold on;
+%  vl_plotframe(campus2_sift);
+%  hold off;
+% figure
+% vl_plotframe(campus3_sift)
+% figure
+% vl_plotframe(campus4_sift)
+% figure
+% vl_plotframe(campus5_sift)
 
 
 

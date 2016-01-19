@@ -13,8 +13,8 @@ testfolder = 'ass5_data/test/';
 ownfolder = 'ass5_data/ownimages/';
 
 % slow -> avoid re-training on the same data
-train_on = 0;
-test_on = 0;
+train_on = 1;
+test_on = 1;
 own_on = 1;
 
 

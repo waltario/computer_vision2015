@@ -16,7 +16,8 @@ actualgroup = [];
 detectedgroup = [];
 
 % smoothing
-sigma = 3;
+smoothing_on = 0;
+sigma = 1;
 
 
 for subfolderindex = 1:num_subfolders
@@ -30,11 +31,19 @@ for subfolderindex = 1:num_subfolders
         
         currentimg = imread([folder subfolder file_list(currentfileindex).name]);
         
-        % some preliminary smoothing is typically necessary
-        % currentimg must be in double precision
-        % already gray-scale
-        currentimg = double(currentimg);
-        currentimg = vl_imsmooth(currentimg, sigma);
+        if(size(currentimg,3)==3)
+           currentimg = rgb2gray(currentimg); 
+        end
+        
+        
+        if(smoothing_on)
+            % some preliminary smoothing is typically necessary
+            % currentimg must be in double precision
+            % already gray-scale
+            currentimg = double(currentimg);
+            currentimg = vl_imsmooth(currentimg, sigma);
+        end
+        
         
         % detect dense SIFT features (vl_dsift instead of vl_sift)
         % this time, step is 1 or 2, and all the information will be used
@@ -64,22 +73,26 @@ for subfolderindex = 1:num_subfolders
 end
 
 
-
-% k-nearest-neighbor 
-detectedgroup = knnclassify(histarray, training, group, 3);
-
-
-disp(['Accuracy: ' num2str(sum(actualgroup==detectedgroup)/size(actualgroup,1))])
+if(size(histarray,1)>0)
+   
+    % k-nearest-neighbor 
+    detectedgroup = knnclassify(histarray, training, group, 21);
 
 
-% confusion matrix
-conf_matrix = zeros(num_subfolders);
-for i = 1:num_subfolders
-    gti = detectedgroup(actualgroup==i);
-    dethist_gti = histc(gti,1:num_subfolders)/size(gti,1);
-    conf_matrix(i,:) = dethist_gti';
+    disp(['Accuracy: ' num2str(sum(actualgroup==detectedgroup)/size(actualgroup,1))])
+
+
+    % confusion matrix
+    conf_matrix = zeros(num_subfolders);
+    for i = 1:num_subfolders
+        gti = detectedgroup(actualgroup==i);
+        dethist_gti = histc(gti,1:num_subfolders)/size(gti,1);
+        conf_matrix(i,:) = dethist_gti';
+    end
+
+else
+    conf_matrix = NaN*ones(num:subfolders)
 end
-
 
 end
 

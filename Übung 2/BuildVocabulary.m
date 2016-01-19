@@ -9,8 +9,10 @@ function cent = BuildVocabulary(folder, num_clusters)
 subfolders = {'bedroom/', 'forest/', 'kitchen/', 'livingroom/', 'mountain/', 'office/', 'store/', 'street/'};
 file_extension = 'jpg';
 
-% sigma could be image-dependent
-sigma = 3;
+% smoothing
+% (sigma could be image-dependent)
+smoothing_on = 0;
+sigma = 1;
 
 featarr = [];
 
@@ -20,11 +22,18 @@ for subfolderindex = 1:size(subfolders,2)
     for currentfileindex = 1:size(file_list,1)
         currentimg = imread([folder subfolder file_list(currentfileindex).name]);
         
-        % some preliminary smoothing is typically necessary
-        % currentimg must be in double precision
-        % already gray-scale
-        currentimg = double(currentimg);
-        currentimg = vl_imsmooth(currentimg, sigma); 
+        if(size(currentimg,3)==3)
+           currentimg = rgb2gray(currentimg); 
+        end
+        
+        
+        if(smoothing_on)
+            % some preliminary smoothing is typically necessary
+            % currentimg must be in double precision
+            % already gray-scale
+            currentimg = double(currentimg);
+            currentimg = vl_imsmooth(currentimg, sigma);
+        end
         
         
         % detect dense SIFT features (vl_dsift instead of vl_sift)

@@ -277,9 +277,10 @@ outputImage3 =  imtransform(imagearray{3} , maketform('projective',[1,0,0;0,1,0;
 outputImageAlpha3 = imtransform(normAlpha , maketform('projective',[1,0,0;0,1,0;0,0,1]),'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
 
 finaloutputimage = outputImage+ outputImage2 + outputImage4 +outputImage5 + outputImage3;
+ims = max(outputImage5,max(outputImage4,max(outputImage3,max(outputImage,outputImage2))));
 
 figure;
-imshow(finaloutputimage);
+imshow(ims);
 
 
 

@@ -282,7 +282,121 @@ ims = max(outputImage5,max(outputImage4,max(outputImage3,max(outputImage,outputI
 figure;
 imshow(ims);
 
+%{
+%TRY3
+test_new1 = zeros(sizeY5,sizeX5);
+test_new2 = zeros(sizeY5,sizeX5);
+test_new3 = zeros(sizeY5,sizeX5);
+test_new4 = zeros(sizeY5,sizeX5);
+test_new5 = zeros(sizeY5,sizeX5);
 
+t1 = outputImageAlpha(outputImageAlphaLogical);
+t1_1 = outputImage(outputImageLogical);
+test_new1 =  t1 .*t1_1;   
+test_new2 =  outputImage2(outputImageLogical2) .*  outputImageAlpha2(outputImageAlphaLogical2);
+test_new3 =  outputImage3(outputImageLogical3) .*  outputImageAlpha3(outputImageAlphaLogical3);
+test_new4 =  outputImage4(outputImageLogical4) .*  outputImageAlpha4(outputImageAlphaLogical4);
+test_new5 =  outputImage5(outputImageLogical5) .*  outputImageAlpha5(outputImageAlphaLogical5);
+
+out2 = zeros(sizeY5,sizeX5,3);
+endOut = zeros(sizeY5,sizeX5,3);
+outputImage = outputImage(:,:,1);
+test1 = outputImage(outputImageLogical(:,:,1)) .*  outputImageAlpha(outputImageAlphaLogical);
+ 
+ out2 = outputImage(outputImageLogical(:,:,1),1);
+ out2 = out2(:,:,1) .* outputImageAlpha(outputImageAlphaLogical);
+ out3 = outputImage2(outputImageLogical2(:,:,1),1) .*  outputImageAlpha2(outputImageAlphaLogical2);
+ 
+%out1= outputImage(outputImageLogical(:,:,1),1) .*  outputImageAlpha(outputImageAlphaLogical) + outputImage2(outputImageLogical2(:,:,1),1) .*  outputImageAlpha2(outputImageAlphaLogical2)+ outputImage3(outputImageLogical3(:,:,1),1) .*  outputImageAlpha3(outputImageAlphaLogical3)  + outputImage4(outputImageLogical4(:,:,1),1) .*  outputImageAlpha4(outputImageAlphaLogical4) + outputImage5(outputImageLogical5(:,:,1),1) .*  outputImageAlpha5(outputImageAlphaLogical5);
+
+alphaout1 = outputImageAlpha(outputImageAlphaLogical) ...
++           outputImageAlpha2(outputImageAlphaLogical2)... 
+          +  outputImageAlpha3(outputImageAlphaLogical3)...
+          +  outputImageAlpha4(outputImageAlphaLogical4)...
+          +  outputImageAlpha5(outputImageAlphaLogical5);
+
+endOut = out1 ./ alphaout1;
+
+figure;
+imshow(endOut);
+%TRY3 ENdE
+
+
+%}
+%{
+ %TRY2
+
+for colum = 1:sizeY5
+    for row = 1: sizeX5
+       
+        for i= 1:imcount
+            
+            output_alpha_div =0;
+            if( outputImageAlphaLogical(colum,row) == 1) 
+                 out1(colum,row,1) = out1(colum,row,1) + outputImage(colum,row,1) *  outputImageAlpha(colum,row);
+                 out1(colum,row,2) = out1(colum,row,2) + outputImage(colum,row,2) *  outputImageAlpha(colum,row);
+                 out1(colum,row,3) = out1(colum,row,3) + outputImage(colum,row,3) *  outputImageAlpha(colum,row);
+                 output_alpha_div =output_alpha_div + outputImageAlpha(colum,row);
+            end
+            if( outputImageAlphaLogical2(colum,row) == 1) 
+                 out1(colum,row,1) = out1(colum,row,1) + outputImage2(colum,row,1) *  outputImageAlpha2(colum,row);
+                 out1(colum,row,2) = out1(colum,row,2) + outputImage2(colum,row,2) *  outputImageAlpha2(colum,row);
+                 out1(colum,row,3) = out1(colum,row,3) + outputImage2(colum,row,3) *  outputImageAlpha2(colum,row);
+                 output_alpha_div =output_alpha_div + outputImageAlpha2(colum,row);
+             end
+             if( outputImageAlphaLogical3(colum,row) == 1) 
+                 out1(colum,row,1) = out1(colum,row,1) + outputImage3(colum,row,1) *  outputImageAlpha3(colum,row);
+                 out1(colum,row,2) = out1(colum,row,2) + outputImage3(colum,row,2) *  outputImageAlpha3(colum,row);
+                 out1(colum,row,3) = out1(colum,row,3) + outputImage3(colum,row,3) *  outputImageAlpha3(colum,row);
+                 output_alpha_div =output_alpha_div + outputImageAlpha3(colum,row);
+              end
+               if( outputImageAlphaLogical4(colum,row) == 1) 
+                 out1(colum,row,1) = out1(colum,row,1) + outputImage4(colum,row,1) *  outputImageAlpha4(colum,row);
+                 out1(colum,row,2) = out1(colum,row,2) + outputImage4(colum,row,2) *  outputImageAlpha4(colum,row);
+                 out1(colum,row,3) = out1(colum,row,3) + outputImage4(colum,row,3) *  outputImageAlpha4(colum,row);
+                 output_alpha_div =output_alpha_div + outputImageAlpha4(colum,row);
+               end
+              if( outputImageAlphaLogical5(colum,row) == 1) 
+                 out1(colum,row,1) = out1(colum,row,1) + outputImage5(colum,row,1) *  outputImageAlpha5(colum,row);
+                 out1(colum,row,2) = out1(colum,row,2) + outputImage5(colum,row,2) *  outputImageAlpha5(colum,row);
+                 out1(colum,row,3) = out1(colum,row,3) + outputImage5(colum,row,3) *  outputImageAlpha5(colum,row);
+                 output_alpha_div =output_alpha_div + outputImageAlpha5(colum,row);
+              end    
+        end
+        if(output_alpha_div > 0)
+             out1(colum,row,1) = out1(colum,row,1)/output_alpha_div;
+             out1(colum,row,2) = out1(colum,row,2)/output_alpha_div;
+             out1(colum,row,3) = out1(colum,row,3)/output_alpha_div;
+             output_alpha_div =0;
+        end
+        
+    end
+end
+figure;
+imshow(out1);
+%}
+% END TRY 2
+%}
+
+%{
+TRY 1
+
+out1(:,:,:) = outputImage(outputImageLogical,:) .*  outputImageAlpha(outputImageAlphaLogical) ... 
++outputImage2(outputImageLogical2,:) .*  outputImageAlpha2(outputImageAlphaLogical2) ...
++outputImage3(outputImageLogical3,:) .*  outputImageAlpha3(outputImageAlphaLogical3)  ...
++outputImage4(outputImageLogical4,:) .*  outputImageAlpha4(outputImageAlphaLogical4) ...
++outputImage5(outputImageLogical5,:) .*  outputImageAlpha5(outputImageAlphaLogical5);
+
+alphaout1 = outputImageAlpha(outputImageAlphaLogical) ...
++           outputImageAlpha2(outputImageAlphaLogical2)... 
+          +  outputImageAlpha3(outputImageAlphaLogical3)...
+          +  outputImageAlpha4(outputImageAlphaLogical4)...
+          +  outputImageAlpha5(outputImageAlphaLogical5);
+
+endOut = out1 ./ alphaout1;
+
+END TRY 1
+%}
 
 end
 

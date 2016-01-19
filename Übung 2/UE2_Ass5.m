@@ -19,4 +19,5 @@ c = BuildVocabulary(trainingfolder, num_clusters);
 
 % classification of test set images 
 conf_matrix = ClassifyImages(testfolder, c, training, group);
-
+disp('Confusion-Matrix');
+disp(conf_matrix);

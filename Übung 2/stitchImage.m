@@ -133,6 +133,154 @@ imshow(diffimg);
 %zugriff z.b über: imtransforms{1}.tdata.T
 
 
+%create composite homografics
+%create H1,3 and H5,3
+
+%H1,3
+imtransforms{5} = maketform('projective',imtransforms{2}.tdata.T * imtransforms{1}.tdata.T);
+%H4,3
+imtransforms{6} = maketform('projective',imtransforms{3}.tdata.Tinv);
+%H5,3
+imtransforms{7} = maketform('projective',  imtransforms{3}.tdata.Tinv * imtransforms{4}.tdata.Tinv);
+
+%test values for calculation H1,3 H5,3
+%H1_3= imtransforms{2}.tdata.T * imtransforms{1}.tdata.T;
+%H1_3Inv = imtransforms{2}.tdata.Tinv * imtransforms{1}.tdata.Tinv;
+%H5,3
+%H5_3= imtransforms{3}.tdata.T * imtransforms{4}.tdata.T;
+%H5_3Inv = imtransforms{3}.tdata.Tinv * imtransforms{4}.tdata.Tinv;
+
+%get size of reference image
+[getMaxY,getMaxX] = size(imagearray{3});
+getMinY = 1;
+getMinX = 1;
+
+image_output = imagearray{1};
+[ySize,xSize,zSize] = size(image_output);
+
+
+%create alpha channel for images
+alpha = zeros(ySize,xSize);
+alpha(round(ySize/2),round(xSize/2)) = 1;
+alpha = bwdist(alpha);
+normAlpha = alpha - min(alpha(:));
+normAlpha = normAlpha ./ max(normAlpha(:));
+figure;
+imshow(normAlpha);
+
+%zeile,spalten -> screen size edges -> prepare for transformnig to ref
+%coord
+xyValues = ones(4,2);
+xyValues(2,1) = (ySize);    
+xyValues(2,2) = 1;
+xyValues(3,1) = (ySize);
+xyValues(3,2) = (xSize);
+xyValues(4,1) = 1;
+xyValues(4,2) = (xSize);
+
+
+[xValues1,yValues1] = tformfwd(imtransforms{5},xyValues);
+ if(max(xValues1)>getMaxX)
+     getMaxX = round(max(xValues1));   
+ end
+     
+ if(max(yValues1)>getMaxY)
+     getMaxY = round(max(yValues1));  
+ end
+     
+ if(min(xValues1)<getMinX)
+     getMinX = round(min(xValues1)); 
+ end
+   
+ if(min(yValues1)<getMinY)
+     getMinY = round(min(yValues1)); 
+ end
+ 
+ 
+ [xValues2,yValues2] = tformfwd(imtransforms{2},xyValues);
+ 
+ if(max(xValues2)>getMaxX)
+     getMaxX = round(max(xValues2));   
+ end
+     
+ if(max(yValues2)>getMaxY)
+     getMaxY = round(max(yValues2));  
+ end
+     
+ if(min(xValues2)<getMinX)
+     getMinX = round(min(xValues2)); 
+ end
+   
+ if(min(yValues2)<getMinY)
+     getMinY = round(min(yValues2)); 
+ end
+ 
+ [xValues4,yValues4] = tformfwd(imtransforms{6},xyValues);
+ 
+ if(max(xValues4)>getMaxX)
+     getMaxX = round(max(xValues4));   
+ end
+     
+ if(max(yValues4)>getMaxY)
+     getMaxY = round(max(yValues4));  
+ end
+     
+ if(min(xValues4)<getMinX)
+     getMinX = round(min(xValues4)); 
+ end
+   
+ if(min(yValues4)<getMinY)
+     getMinY = round(min(yValues4)); 
+ end
+    
+ 
+ [xValues5,yValues5] = tformfwd(imtransforms{7},xyValues);
+ 
+ if(max(xValues5)>getMaxX)
+     getMaxX = round(max(xValues4));   
+ end
+     
+ if(max(yValues5)>getMaxY)
+     getMaxY = round(max(yValues5));  
+ end
+     
+ if(min(xValues5)<getMinX)
+     getMinX = round(min(xValues5)); 
+ end
+   
+ if(min(yValues5)<getMinY)
+     getMinY = round(min(yValues5)); 
+ end
+    
+ 
+%create new output image
+outputImage = zeros(getMaxY - getMinY +1 ,getMaxX - getMinX + 1,3);
+[yS,xS,zS] = size(outputImage);
+
+%add reference picture to outputimage
+
+outputImage = imtransform(imagearray{1} , imtransforms{5},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+outputImageAlpha = imtransform(normAlpha , imtransforms{5},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+    
+outputImage2 = imtransform(imagearray{2} , imtransforms{2},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+outputImageAlpha2 = imtransform(normAlpha , imtransforms{2},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);   
+
+outputImage4 = imtransform(imagearray{4} , imtransforms{6},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+outputImageAlpha4 = imtransform(normAlpha , imtransforms{6},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+
+outputImage5 = imtransform(imagearray{5} , imtransforms{7},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+outputImageAlpha5 = imtransform(normAlpha , imtransforms{7},'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+
+[sizeY5,sizeX5,sizeZ5] = size(outputImage5);
+
+outputImage3 =  imtransform(imagearray{3} , maketform('projective',[1,0,0;0,1,0;0,0,1]),'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]); 
+outputImageAlpha3 = imtransform(normAlpha , maketform('projective',[1,0,0;0,1,0;0,0,1]),'XData',[getMinX getMaxX],'YData',[getMinY getMaxY]);
+
+finaloutputimage = outputImage+ outputImage2 + outputImage4 +outputImage5 + outputImage3;
+
+figure;
+imshow(finaloutputimage);
+
 
 
 end
